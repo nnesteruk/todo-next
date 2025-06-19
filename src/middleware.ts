@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export default function middleware(request: NextRequest) {
-  const isAuthPage = request.nextUrl.pathname.startsWith('/login');
+  const publicPaths = ['/login', '/registration'];
+  const pathname = request.nextUrl.pathname;
 
-  if (!isAuthPage) {
+  const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
+
+  if (!isPublicPath) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
